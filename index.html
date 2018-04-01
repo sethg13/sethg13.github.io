@@ -29,6 +29,7 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 			<div class="container">
+
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
 						<i class="fa fa-bars"></i>
@@ -55,16 +56,17 @@
 						<li>
 							<a class="page-scroll" href="#contact">Contact</a>
 						</li>
-						
 					</ul>
-				</div> <!-- /.navbar-collapse -->
-			</div> <!-- /.container -->
+				</div>
+
+			</div>
 		</nav>
 
 		<!-- Intro Header -->
 		<header class="intro">
 			<div class="intro-body">
 				<div class="container">
+
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2">
 							<h1 class="brand-heading">Seth George</h1>
@@ -73,6 +75,7 @@
 							</a>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</header>
@@ -81,95 +84,87 @@
 		<section id="about" class="container content-section text-center">
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2">
+
+					<!-- About Section -->
 					<h2>About Me</h2>
+					
 					<p>
 						Hello, my name is Seth. I have two Bachelors of Science degrees,
 						software engineering and cognitive psychology, from Iowa State University.
 						I'm interested in VR, making games, and other projects that sound like they belong
 						in sci-fi movies. Let's make some cool stuff together.</br>
-					</br>
-						Upcoming Publications:</br>
-						Kelly, J. W., Cherep, L. A., Klesel, B., Siegel, Z. D., George, S. (in press).</br>
-						Comparison of two methods for improving distance perception in virtual reality.</br>
-						ACM Transactions on Applied Perception.</br>
 					</p>
+
 					<ul class="list-inline banner-social-buttons">
 						<li>
 							<a href="app-mats/SethGeorgeResume.pdf" class="btn btn-default btn-lg">Résumé</a>
 						</li>
+						<li>
+							<a href="https://dl.acm.org/citation.cfm?id=3165285" class="btn btn-default btn-lg">VR Publication</a>
+						</li>
 					</ul>
+
 					<a href="#projects" class="btn btn-circle page-scroll">
 						<i class="fa fa-angle-double-down animated"></i>
 					</a>
+
 				</div>
 			</div>
 		</section>
-		
+					
 		<!-- Projects Section -->
 		<section id="projects" class="content-section text-center">
 			<div class="projects-section">
 				<div class="container">
-					<div class="col-lg-8 col-lg-offset-2">
-						<h2>Projects</h2>
-						<ul class="list-inline banner-social-buttons">
-							<li>
-								<a href="graphics/scene/SpaceScene.html" class="btn btn-default btn-lg">WebGL Space Scene</a>
-								<p>
-									This was a project for the Introduction to Computer Graphics course
-									at Iowa State where I learned about shaders the the graphics pipeline.
-									This project uses the Three.js library.
-								</p>
-							</li>
-							<li>
-								<a href="https://www.youtube.com/watch?v=AJC8lozNTlI" class="btn btn-default btn-lg">EEG Mind Maze</a>
-								<p>
-									This was a group project for a Software Development Practices course
-									at Iowa State. The goal was to use an EEG to register certain brain
-									wave patterns to as event triggers. We can then use those triggers to
-									allow the user to navigate through a randomly generated 3D maze by
-									thinking a direction. I learned how to use QT/QML, and how to use it
-									in conjunction with OpenGL.
-								</p>
-							</li>
-							<li>
-								<a href="videos/MarsRover.mp4" class="btn btn-default btn-lg">Mars Rover</a>
-								<p>
-									This was a group project for Embedded Systems at Iowa State. The goal
-									was to navigate through an obstacle course using only what we programmed
-									the robot to recognize via sensors. We also implements a makeshift GUI
-									of ASCII characters to display what the robot saw on a console. This
-									project taught me about pointers, bit shifting, and events.
-								</p>
-							</li>
-							<li>
-								<a href="othello/othello.html" class="btn btn-default btn-lg">Othello</a>
-								<p>
-									This Unity project was done to learn about AI development, specifically
-									the alpha pruning algorithm. This pruning technique is ideal for this
-									game since the AI goes through all the possible moves to see what the
-									most valuble move would be, and on the hardest difficulty the AI looks
-									ahead 10 moves.
-								</p>
-							</li>
-							<li>
-								<p>
-									Random Made, currently assuming the name Low Tier Studio, is an indie game 
-									studio and passion project centered around a group of college students 
-									documenting all of the mistakes we make during development and being as 
-									transparent about who we are and why we do what we do to make this studio 
-									successful or fail miserably (and then explain why). Hopefully, this will 
-									highlight some of the pitfalls other indie game startups may face so they 
-									can avoid them. As Co-Founder and Studio Owner, I am responsible for managing 
-									the company's finances, acting as project manager and producer, and fulfilling 
-									any other jobs that require my skills, such as software engineer or technical artist.
-								</p>
-							</li>
 
-						</ul>
-						<a href="#contact" class="btn btn-circle page-scroll">
-							<i class="fa fa-angle-double-down animated"></i>
-						</a>
-					</div>
+					<h2>Projects</h2>
+					<div class="row">
+
+						<div class="col-sm-6">
+							<a href="graphics/scene/SpaceScene.html" class="btn btn-default btn-lg">WebGL Space Scene</a>
+							<p>
+								This was a project for the Introduction to Computer Graphics course
+								at Iowa State where I learned about shaders the the graphics pipeline.
+								This project uses the Three.js library.
+							</p>
+						</div>
+
+						<div class="col-sm-6">
+							<a href="https://www.youtube.com/watch?v=AJC8lozNTlI" class="btn btn-default btn-lg">EEG Mind Maze</a>
+							<p>
+								The goal was to use an EEG to register certain brain
+								wave patterns to as event triggers. We can then use those triggers to
+								allow the user to navigate through a randomly generated 3D maze by
+								thinking a direction. I learned how to use QT/QML, and how to use it
+								in conjunction with OpenGL.
+							</p>
+						</div>
+
+						<div class="col-sm-6">
+							<a href="videos/MarsRover.mp4" class="btn btn-default btn-lg">Mars Rover</a>
+							<p>
+								The goal was to navigate through an obstacle course using only what we
+								programmed the robot to recognize via sensors. We also implements a
+								makeshift GUI of ASCII characters to display what the robot saw on a console.
+								This project taught me about pointers, bit shifting, and events.
+							</p>
+						</div>
+
+						<div class="col-sm-6">
+							<a href="othello/othello.html" class="btn btn-default btn-lg">Othello</a>
+							<p>
+								This Unity project was done to learn about AI development, specifically
+								the alpha pruning algorithm. This pruning technique is ideal for this
+								game since the AI goes through all the possible moves to see what the
+								most valuble move would be, and on the hardest difficulty the AI looks
+								ahead 10 moves.
+							</p>
+						</div>
+
+					<a href="#contact" class="btn btn-circle page-scroll">
+						<i class="fa fa-angle-double-down animated"></i>
+					</a>
+
 				</div>
 			</div>
 		</section>
@@ -178,6 +173,7 @@
 		<section id="contact" class="container content-section text-center">
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2">
+					
 					<h2>Contact Me</h2>
 					<p>Feel free to contact me about job offers, fun projects, or just to say hello!</p>
 					<ul class="list-inline banner-social-buttons">
@@ -197,16 +193,11 @@
 							<a href="mailto:sethg13@gmail.com" class="btn btn-default btn-lg">E-mail</a>
 						</li>
 					</ul>
+
 				</div>
 			</div>
 		</section>
 
-		<!-- Footer -->
-		<footer>
-			<div class="container text-center">
-				<p>Seth George 2017</p>
-			</div>
-		</footer>
 
 		<!-- jQuery -->
 		<script src="js/jquery.js"></script>
