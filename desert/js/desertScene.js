@@ -12,18 +12,31 @@ function init() {
     camera.position.x = 0;
     camera.position.y = 1;
     camera.position.z = 10;
+
+    // Scene
+    scene = new THREE.Scene();;
+    scene.background = new THREE.Color().setHSL(0.5, 0.25, 0.01);
     
-    controls = new THREE.DeviceOrientationControls(camera);
+    // find out if we can use orientation as controller type
+    var hasGyro = false;
+    window.addEventListener("devicemotion", function(event) {
+        if(event.rotationRate.alpha || event.rotationRate.beta || event.rotationRate.gamma)
+        hasGyro = true;
+    });
+    console.log(hasGyro);
+
+
+    console.log("pre");
+    controls = new THREE.PointerLockControls(camera);
+    scene.add(controls.getObject());
+    console.log("post");
+
     /* Controls
     if (typeof window.orientation !== 'undefined') { // if mobile
         controls = new THREE.DeviceOrientationControls(camera);
     } else {
         controls = new THREE.PointerLockControls(camera);
     }*/
-    
-    // Scene
-    scene = new THREE.Scene();;
-    scene.background = new THREE.Color().setHSL(0.5, 0.25, 0.01);
 
     // Cube
     var cubeGeo = new THREE.BoxGeometry(1, 1, 1);
