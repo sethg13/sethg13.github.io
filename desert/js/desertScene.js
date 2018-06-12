@@ -13,6 +13,14 @@ function init() {
     camera.position.y = 1;
     camera.position.z = 10;
     
+    controls = new THREE.PointerLockControls(camera);
+    /* Controls
+    if (typeof window.orientation !== 'undefined') { // if mobile
+        controls = new THREE.DeviceOrientationControls(camera);
+    } else {
+        controls = new THREE.PointerLockControls(camera);
+    }*/
+    
     // Scene
     scene = new THREE.Scene();;
     scene.background = new THREE.Color().setHSL(0.5, 0.25, 0.01);
@@ -93,9 +101,6 @@ function init() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.BasicShadowMap;
     document.body.appendChild(renderer.domElement);
-
-    // Controls
-    controls = new THREE.OrbitControls( camera );
     
     // Handle resize
     window.addEventListener('resize', onWindowResize, false);
