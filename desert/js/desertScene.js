@@ -13,7 +13,7 @@ function init() {
     camera.position.y = 1;
     camera.position.z = 10;
     
-    controls = new THREE.PointerLockControls(camera);
+    controls = new THREE.DeviceOrientationControls(camera);
     /* Controls
     if (typeof window.orientation !== 'undefined') { // if mobile
         controls = new THREE.DeviceOrientationControls(camera);
