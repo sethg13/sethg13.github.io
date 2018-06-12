@@ -23,7 +23,7 @@ function init() {
         if(event.rotationRate.alpha || event.rotationRate.beta || event.rotationRate.gamma)
         hasGyro = true;
     });
-    console.log(hasGyro);
+    alert(hasGyro);
 
 
     console.log("pre");
