@@ -439,4 +439,4 @@ var DeviceOrientationControls = function (object, domElement) {
 
 };
 
-DeviceOrientationController.prototype = Object.create(THREE.EventDispatcher.prototype);
+DeviceOrientationControls.prototype = Object.create(THREE.EventDispatcher.prototype);

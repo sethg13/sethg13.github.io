@@ -14,29 +14,17 @@ function init() {
     camera.position.z = 10;
 
     // Scene
-    scene = new THREE.Scene();;
+    scene = new THREE.Scene();
     scene.background = new THREE.Color().setHSL(0.5, 0.25, 0.01);
-    
-    // find out if we can use orientation as controller type
-    var hasGyro = false;
-    window.addEventListener("devicemotion", function(event) {
-        if(event.rotationRate.alpha || event.rotationRate.beta || event.rotationRate.gamma)
-        hasGyro = true;
-    });
-    alert(hasGyro);
 
-
-    console.log("pre");
-    controls = new THREE.PointerLockControls(camera);
-    scene.add(controls.getObject());
-    console.log("post");
-
-    /* Controls
-    if (typeof window.orientation !== 'undefined') { // if mobile
+    // Controls
+    if (window.DeviceOrientationEvent) {
+        console.log("has device orientation")
         controls = new THREE.DeviceOrientationControls(camera);
     } else {
+        console.log("doesn't have device orientation")
         controls = new THREE.PointerLockControls(camera);
-    }*/
+    }
 
     // Cube
     var cubeGeo = new THREE.BoxGeometry(1, 1, 1);
@@ -124,11 +112,6 @@ function onWindowResize(event) {
 
     camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-}
-
-function onDocumentMouseMove(event) {
-    mouseX = (event.clientX - windowHalfX);
-    mouseY = (event.clientY - windowHalfY);
 }
 
 function animate() {
