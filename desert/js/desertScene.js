@@ -19,7 +19,13 @@ function init() {
 
     // Controls
     if (window.DeviceOrientationEvent) {
-        console.log("has device orientation")
+        window.addEventListener('deviceorientation', function(event) {
+            var roll = event.beta;
+            var pitch = event.gamma;
+            var yaw = event.alpha;
+            // Do something
+            console.log("has device orientation")
+        }, false);
         //controls = new THREE.DeviceOrientationControls(camera);
     } else {
         console.log("doesn't have device orientation")
