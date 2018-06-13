@@ -20,10 +20,10 @@ function init() {
     // Controls
     if (window.DeviceOrientationEvent) {
         console.log("has device orientation")
-        controls = new THREE.DeviceOrientationControls(camera);
+        //controls = new THREE.DeviceOrientationControls(camera);
     } else {
         console.log("doesn't have device orientation")
-        controls = new THREE.PointerLockControls(camera);
+        //controls = new THREE.PointerLockControls(camera);
     }
 
     // Cube
