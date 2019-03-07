@@ -1,0 +1,11 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "othello.data.unityweb",
+"asmCodeUrl": "othello.asm.code.unityweb",
+"asmMemoryUrl": "othello.asm.memory.unityweb",
+"asmFrameworkUrl": "othello.asm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
