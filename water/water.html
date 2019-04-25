@@ -11,9 +11,147 @@
 		<!--link rel="stylesheet" href="style.css"-->
 	</head>
 	<body>
+
+
 		<script src="lib/three.min.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/MarchingCubes.js"></script>
-		<script src="js/waterScene.js"></script>
-	</body>
+		<script>
+			var container;
+			var camera, scene, renderer, controls;
+			var mouseX = 0, mouseY = 0;
+			var light, ambient;
+			var cube;
+
+
+
+			init();
+			animate();
+
+			function init() {
+				// Scene
+
+				var path = 'textures/skybox/';
+				var urls = [path + 'px.jpg', path + 'nx.jpg', path + 'py.jpg', path + 'ny.jpg', path + 'pz.jpg', path + 'nz.jpg']
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.CubeTextureLoader().load(urls);
+
+				var textureCube = new THREE.CubeTextureLoader().load(urls);
+				textureCube.mapping = THREE.CubeRefractionMapping;
+
+				var material = new THREE.MeshPhongMaterial({color: 0xffffff, envMap: textureCube, refractionRatio: 0.95, reflectivity: 0.9});
+
+				// Camera
+				camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 1000);
+				camera.position.set(2, 5, -10);
+				camera.lookAt(scene.position);
+
+
+
+				// Lighting
+				light = new THREE.DirectionalLight(0xdddddddd);
+				light.position.set(-1, 1, 1);
+				scene.add(light);
+
+				ambient = new THREE.AmbientLight( 0xffffff );
+				scene.add( ambient );
+
+				// Cube
+				var cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+				cube = new THREE.Mesh(cubeGeo, material);
+				cube.position.y = 1;
+				scene.add(cube);
+
+
+				// Marching Cubes
+				resolution = 28;
+				effect = new THREE.MarchingCubes(resolution, material, true, true );
+				effect.position.set(0, 0, 0);
+				effect.scale.set(700, 700, 700);
+				effect.enableUvs = false;
+				effect.enableColors = false;
+				scene.add(effect);
+
+				// Floor
+				var floorMat = new THREE.MeshStandardMaterial({
+					roughness: 0.8,
+					color: 0xffffff,
+					metalness: 0.25,
+					bumpScale: 0.001
+				});
+
+				var textureLoader = new THREE.TextureLoader();
+				textureLoader.load("textures/hardwood/hardwood2_diffuse.jpg", function(map) {
+					map.wrapS = THREE.RepeatWrapping;
+					map.wrapT = THREE.RepeatWrapping;
+					map.anisotropy = 4;
+					map.repeat.set(10, 24);
+					floorMat.map = map;
+					floorMat.needsUpdate = true;
+				});
+				textureLoader.load("textures/hardwood/hardwood2_bump.jpg", function(map) {
+					map.wrapS = THREE.RepeatWrapping;
+					map.wrapT = THREE.RepeatWrapping;
+					map.anisotropy = 4;
+					map.repeat.set(10, 24);
+					floorMat.bumpMap = map;
+					floorMat.needsUpdate = true;
+				});
+				textureLoader.load("textures/hardwood/hardwood2_roughness.jpg", function(map) {
+					map.wrapS = THREE.RepeatWrapping;
+					map.wrapT = THREE.RepeatWrapping;
+					map.anisotropy = 4;
+					map.repeat.set(10, 24);
+					floorMat.roughnessMap = map;
+					floorMat.needsUpdate = true;
+				});
+
+				var floorGeo = new THREE.PlaneBufferGeometry(20, 20);
+				var floorMesh = new THREE.Mesh(floorGeo, floorMat);
+				floorMesh.receiveShadow = true;
+				floorMesh.rotation.x = -Math.PI / 2.0;
+				floorMesh.position.y = -2;
+				scene.add(floorMesh);
+
+
+				// Renderer
+				renderer = new THREE.WebGLRenderer({antialias: true});
+				renderer.gammaOutput = true;
+				renderer.setPixelRatio(window.devicePixelRatio);
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				document.body.appendChild(renderer.domElement);
+
+				// Controls
+				controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+				// Handle resize
+				window.addEventListener('resize', onWindowResize, false);
+			}
+
+
+			function onWindowResize(event) {
+				renderer.setSize(window.innerWidth, window.innerHeight);
+
+				camera.aspect = window.innerWidth/window.innerHeight;
+				camera.updateProjectionMatrix();
+			}
+
+
+			function animate() {
+				requestAnimationFrame(animate);
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				render();
+			}
+
+
+			function render() {
+				camera.lookAt(scene.position);
+				renderer.render(scene, camera);
+			}
+		</script>
+</body>
 </html>
