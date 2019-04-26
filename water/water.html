@@ -11,67 +11,68 @@
 		<!--link rel="stylesheet" href="style.css"-->
 	</head>
 	<body>
-
-
 		<script src="lib/three.min.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/MarchingCubes.js"></script>
+
 		<script>
-			var container;
-			var camera, scene, renderer, controls;
+			var scene, renderer, controls;
+			var camera, refractionCamera;
+
 			var mouseX = 0, mouseY = 0;
 			var light, ambient;
-			var cube;
 
-
+			var time = 0;
+			var clock = new THREE.Clock();
 
 			init();
 			animate();
 
 			function init() {
 				// Scene
-
 				var path = 'textures/skybox/';
 				var urls = [path + 'px.jpg', path + 'nx.jpg', path + 'py.jpg', path + 'ny.jpg', path + 'pz.jpg', path + 'nz.jpg']
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.CubeTextureLoader().load(urls);
 
-				var textureCube = new THREE.CubeTextureLoader().load(urls);
-				textureCube.mapping = THREE.CubeRefractionMapping;
+				//var textureCube = new THREE.CubeTextureLoader().load(urls);
+				//textureCube.mapping = THREE.CubeRefractionMapping;
 
-				var material = new THREE.MeshPhongMaterial({color: 0xffffff, envMap: textureCube, refractionRatio: 0.95, reflectivity: 0.9});
+				refractionCamera = new THREE.CubeCamera(0.1, 5000, 1024);
+				scene.add(refractionCamera);
+
+				refractionCamera.renderTarget.texture.mapping = THREE.CubeRefractionMapping;
+				refractionCamera.position = -scene.position;
+
+				var material = new THREE.MeshPhongMaterial({
+					color: 0xffffff,
+					envMap: refractionCamera.renderTarget.texture,
+					refractionRatio: 0.95,
+					reflectivity: 0.9
+				});
 
 				// Camera
 				camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 1000);
 				camera.position.set(2, 5, -10);
 				camera.lookAt(scene.position);
 
-
-
 				// Lighting
 				light = new THREE.DirectionalLight(0xdddddddd);
 				light.position.set(-1, 1, 1);
 				scene.add(light);
 
-				ambient = new THREE.AmbientLight( 0xffffff );
-				scene.add( ambient );
-
-				// Cube
-				var cubeGeo = new THREE.BoxGeometry(1, 1, 1);
-				cube = new THREE.Mesh(cubeGeo, material);
-				cube.position.y = 1;
-				scene.add(cube);
-
+				ambient = new THREE.AmbientLight(0x88888888);
+				scene.add(ambient);
 
 				// Marching Cubes
-				resolution = 28;
-				effect = new THREE.MarchingCubes(resolution, material, true, true );
-				effect.position.set(0, 0, 0);
-				effect.scale.set(700, 700, 700);
-				effect.enableUvs = false;
-				effect.enableColors = false;
-				scene.add(effect);
+				resolution = 42;
+				marchingCubes = new THREE.MarchingCubes(resolution, material, true, true );
+				marchingCubes.position.set(0, 1, 0);
+				marchingCubes.scale.set(3, 3, 3);
+				marchingCubes.enableUvs = false;
+				marchingCubes.enableColors = false;
+				scene.add(marchingCubes);
 
 				// Floor
 				var floorMat = new THREE.MeshStandardMaterial({
@@ -86,7 +87,7 @@
 					map.wrapS = THREE.RepeatWrapping;
 					map.wrapT = THREE.RepeatWrapping;
 					map.anisotropy = 4;
-					map.repeat.set(10, 24);
+					map.repeat.set(3, 7);
 					floorMat.map = map;
 					floorMat.needsUpdate = true;
 				});
@@ -94,7 +95,7 @@
 					map.wrapS = THREE.RepeatWrapping;
 					map.wrapT = THREE.RepeatWrapping;
 					map.anisotropy = 4;
-					map.repeat.set(10, 24);
+					map.repeat.set(3, 7);
 					floorMat.bumpMap = map;
 					floorMat.needsUpdate = true;
 				});
@@ -102,7 +103,7 @@
 					map.wrapS = THREE.RepeatWrapping;
 					map.wrapT = THREE.RepeatWrapping;
 					map.anisotropy = 4;
-					map.repeat.set(10, 24);
+					map.repeat.set(3, 7);
 					floorMat.roughnessMap = map;
 					floorMat.needsUpdate = true;
 				});
@@ -111,15 +112,20 @@
 				var floorMesh = new THREE.Mesh(floorGeo, floorMat);
 				floorMesh.receiveShadow = true;
 				floorMesh.rotation.x = -Math.PI / 2.0;
-				floorMesh.position.y = -2;
+				floorMesh.position.y = -5;
 				scene.add(floorMesh);
-
 
 				// Renderer
 				renderer = new THREE.WebGLRenderer({antialias: true});
 				renderer.gammaOutput = true;
+				renderer.gammaInput = true;
 				renderer.setPixelRatio(window.devicePixelRatio);
 				renderer.setSize(window.innerWidth, window.innerHeight);
+
+				renderer.domElement.style.position = "absolute";
+				renderer.domElement.style.top = "0px";
+				renderer.domElement.style.left = "0px";
+
 				document.body.appendChild(renderer.domElement);
 
 				// Controls
@@ -131,27 +137,45 @@
 
 
 			function onWindowResize(event) {
-				renderer.setSize(window.innerWidth, window.innerHeight);
-
 				camera.aspect = window.innerWidth/window.innerHeight;
 				camera.updateProjectionMatrix();
+
+				renderer.setSize(window.innerWidth, window.innerHeight);
+			}
+
+
+			function updateCubes(object, time, numblobs) {
+				object.reset();
+
+				var i, ballx, bally, ballz, subtract, strength;
+				subtract = 12;
+				strength = 1.2 / ((Math.sqrt(numblobs) - 1) / 4 + 1);
+
+				for (i = 0; i < numblobs; i ++) {
+					ballx = Math.sin(i + 1.26 * time * (1.03 + 0.5 * Math.cos( 0.21 * i))) * 0.27 + 0.5;
+					bally = Math.abs(Math.cos(i + 1.12 * time * Math.cos( 1.22 + 0.1424 * i))) * 0.77; // dip into the floor
+					ballz = Math.cos(i + 1.32 * time * 0.1 * Math.sin((0.92 + 0.53 * i))) * 0.27 + 0.5;
+
+					object.addBall(ballx, bally, ballz, strength, subtract);
+				}
+
+				object.addPlaneY(2, 12);
 			}
 
 
 			function animate() {
 				requestAnimationFrame(animate);
 
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
+				refractionCamera.update(renderer, scene);
 
-				render();
-			}
+				time += clock.getDelta() * 0.5;
+				updateCubes(marchingCubes, time, 10);
 
-
-			function render() {
 				camera.lookAt(scene.position);
 				renderer.render(scene, camera);
 			}
+
 		</script>
+
 </body>
 </html>
